@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root{
+    --color-blue: #3869FF;
+    --color-dark-blue: #2b56d5;
+    --color-dark-gray: #43434A;
+    --color-medium-gray: #D3D3D3;
+    --color-gray: #F3F3F3;
+    --color-white: #FFFFFF;
+    --color-green: #1AB445;
+    --color-dark-green: #118e35;
+    --color-red: #E15555;
+    --color-dark-red: #c43c3c;
+
+    --fsize-xsm: 11px;
+    --fsize-sm: 12px;
+    --fsize-md: 14px;
+    --fsize-lg: 16px;
+    --fsize-xl: 22px;
+    --fsize-xxl: 25px;    
+}
+
+* {
+    font-family: "Poppins";
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.icon{
+  width: 30px;  
+  height: 30px;
+}
+
+.icon-sm{
+    width: 15px;  
+    height: 15px;
+  }
+
+.rounded{
+    border-radius: 5px;
+}
+
+.ml-10{
+    margin-left: 10px; 
+ }
+ 
+ .ml-20{
+     margin-left: 20px; 
+  }
+ 
+ .w100{
+     width: 100%;
+ }
+
+ input {    
+    border: 1px solid var(--color-medium-gray);
+    padding: 10px;
+    font-size: var(--fsize-md);
+}
+
+select{    
+    background-color: var(--color-white);
+    font-size: var(--fsize-md);
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid var(--color-medium-gray);    
+}
+ 
+.btn{        
+    padding: 10px;
+    font-size: var(--fsize-md);  
+    cursor: pointer;  
+}
+
+.btn-blue{
+    border: 1px solid var(--color-blue);
+    background-color: var(--color-blue);
+    color: var(--color-white);
+}
+
+.btn-blue:hover{
+    background-color: var(--color-dark-blue);    
+}
+
+.btn-blue-outline{
+    border: 1px solid var(--color-blue);
+    background-color: var(--color-white);
+    color: var(--color-blue);
+}
+
+.btn-blue-outline:hover{
+    border: 1px solid var(--color-blue);
+    background-color: var(--color-blue);
+    color: var(--color-white);
+}
+
+.btn-green{
+    border: 1px solid var(--color-green);
+    background-color: var(--color-green);
+    color: var(--color-white);
+}
+
+.btn-green:hover{
+    background-color: var(--color-dark-green);    
+}
+
+.btn-red{
+    border: 1px solid var(--color-red);
+    background-color: var(--color-red);
+    color: var(--color-white);
+}
+
+.btn-red:hover{
+    background-color: var(--color-dark-red);    
+}
+
+.text-right{
+    text-align: right;
+}
+
+table{
+    width: 100%;
+    text-align: left;
+}
+
+
+td{
+    border-bottom: 1px solid var(--color-gray);
+    padding: 4px 0px;
+}

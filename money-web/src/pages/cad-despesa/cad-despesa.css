@@ -1,0 +1,21 @@
+.container-despesa-cad{
+  margin: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-despesa-cad{
+  width: 500px;
+  border: 1px solid var(--color-medium-gray);
+  padding: 40px;        
+}
+
+.input-group{
+  margin: 40px 0px;
+}
+
+.input-lg {       
+  font-size: var(--fsize-xxl);    
+}
+

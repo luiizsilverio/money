@@ -1,0 +1,15 @@
+.container-home{
+  margin: 30px 80px 30px 120px;    
+}
+
+.title-home{
+  display: flex;
+  justify-content: space-between;
+}
+
+.box-despesa{
+  border: 1px solid var(--color-medium-gray);
+  padding: 20px;
+  border-radius: 10px;    
+  margin-top: 30px;        
+}
