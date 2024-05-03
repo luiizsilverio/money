@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./cad-despesa.css";
+import { useContexto } from "../../context";
 
 export default function CadDespesa() {
   const [valor, setValor] = useState(0);
   const [descricao, setDescricao] = useState("");
   const [categoria, setCategoria] = useState("");
+  const {setShowBusca} = useContexto();
 
   const navigate = useNavigate();
   const { id: idUrl } = useParams();
@@ -14,7 +16,7 @@ export default function CadDespesa() {
     navigate("/");
   }
   
-  const GetDadosDespesa = (id) => {
+  const getDadosDespesa = (id) => {
     // Faz o GET na API...
 
     setValor(150);
@@ -22,6 +24,13 @@ export default function CadDespesa() {
     setCategoria("Mercado");
   }
 
+  useEffect(() => {
+    setShowBusca(false);
+
+    if (idUrl !== "add") {
+      getDadosDespesa(idUrl);
+    }
+  }, [])
 
   return (
     <div className="container-despesa-cad">

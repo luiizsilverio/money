@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useContexto } from "../../context.js";
 import icons from "../../styles/icons.js";
 import "./home.css";
 
@@ -15,14 +16,16 @@ let dados = [
   { id: 8, icon: "https://jornadajs-devpoint.s3.amazonaws.com/icon-viagem.png", categoria: "Viagem", descricao: "Hotel", valor: 330 }
 ];
 
-let dadosFiltrados = [
-  { id: 1, icon: "https://jornadajs-devpoint.s3.amazonaws.com/icon-carro.png", categoria: "Carro", descricao: "Pagamento IPVA", valor: 2500 }
-];
 
 export default function Home() {
   const [despesas, setDespesas] = useState([]);
+  const { busca, setVtotal, setShowBusca } = useContexto();
 
   const navigate = useNavigate();
+
+  function deleteDespesa(id) {
+    alert(id);
+  }
   
   function RenderDespesa({despesa}) {
     return (
@@ -46,7 +49,7 @@ export default function Home() {
             <img src={icons.edit} alt="Alterar" className="icon-sm" />
           </button>
           
-          <button className="btn btn-red ml-10">
+          <button className="btn btn-red ml-10" onClick={() => deleteDespesa(despesa.id)}>
             <img src={icons.remove} alt="Excluir" className="icon-sm" />
           </button>
         </td>
@@ -54,14 +57,25 @@ export default function Home() {
     )
   }
 
-  function listarDespesas() {
-    setDespesas(dados);
+  function listarDespesas(busca) {
+    let data = dados;
+
+    if (busca) {
+      data = dados.filter((desp) => 
+        desp.descricao.toUpperCase().includes(busca.toUpperCase())
+      );
+    }
+
+    setDespesas(data);
+    setVtotal(data.reduce((acc, item) => acc + item.valor, 0));
   }
 
   useEffect(() => {
-    listarDespesas();
-  }, [])
-
+    setShowBusca(true);
+    listarDespesas(busca);
+  }, [busca])
+  
+   
   return (
     <div className="container-home">
       <div className="title-home">
