@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useFocusEffect } from "@react-navigation/native";
 
 import icons from "../../constants/icons.js";
 import { styles } from "./home.style.js";
@@ -86,9 +87,11 @@ export default function Home(props) {
     }    
   }
 
-  useEffect(() => {
+  
+  useFocusEffect(useCallback(() => {
     listarDespesas();
-  }, [])
+  }, []))
+
 
   return (
     <View style={styles.container}>

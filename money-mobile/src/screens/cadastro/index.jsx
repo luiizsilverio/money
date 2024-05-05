@@ -9,21 +9,69 @@ import theme from "../../constants/theme";
 import { api } from "../../services/api";
 
 export default function Cadastro(props) {
-  const [valor, setValor] = useState(0);
+  const [valor, setValor] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [categoria, setCategoria] = useState("");
+  const [categoria, setCategoria] = useState("Lazer");
 
   const route = useRoute();
 	const { id } = route.params;
 
-  function handleSalvar() {
-    
-    props.navigation.goBack();
+  async function handleSalvar() {
+    try {
+      if (id > 0) {
+        await api.put(`despesas/${id}`, {
+          descricao,
+          categoria,
+          valor
+        })
+      } else {
+        await api.post('despesas', {
+          descricao,
+          categoria,
+          valor
+        })
+      }
+    }
+    catch (error) {
+      console.log(error.message);
+      Alert.alert("Erro ao gravar os dados da despesa", error.message);
+    }
+    finally {
+      props.navigation.goBack();
+    }    
   }
 
   function handleExcluir() {
+    
+    async function confirmaExclusao() {
+      try {
+        await api.delete(`despesas/${id}`);    
+      }
+      catch (error) {
+        console.log(error.message);
+        Alert.alert("Erro ao excluir a despesa", error.message);
+      }
+      finally {
+        props.navigation.goBack();
+      }    
+    }
 
-    props.navigation.goBack();
+    // Alert.alert('excluir')
+    Alert.alert(
+      'Exclusão da Despesa', 
+      'Confirma excluir a despesa?',
+      [
+        { // primeiro botão
+          text: "Confirma", 
+          style: 'cancel',  // mostra em vermelho, somente iOS
+          onPress: () => confirmaExclusao() // terceiro parâmetro Action opcional
+        },
+        { // segundo botão
+          text: "Cancela",
+        },
+      ]
+    )
+   
   }
 
   useEffect(() => {
@@ -37,7 +85,7 @@ export default function Cadastro(props) {
       }
       catch (error) {
         console.log(error.message);
-        Alert.alert("Erro ao buscar os dados da despesa");
+        Alert.alert("Erro ao buscar os dados da despesa", error.message);
       }    
     }
 
@@ -45,7 +93,7 @@ export default function Cadastro(props) {
       title: id > 0 ? 'Alterar Despesa' : 'Nova Despesa'
     })
 
-    buscaDespesa();
+    if (id > 0) buscaDespesa();
   }, [])
 
   return (
@@ -56,8 +104,8 @@ export default function Cadastro(props) {
           placeholder="0,00" 
           style={styles.inputValor} 
           value={valor}
-          // defaultValue={valor.toFixed(2)} 
           keyboardType="decimal-pad" 
+          onChangeText={setValor}
         />
       </View>
 
@@ -67,7 +115,7 @@ export default function Cadastro(props) {
           placeholder="Ex: Aluguel" 
           style={styles.inputText} 
           value={descricao}
-          // defaultValue={descricao} 
+          onChangeText={setDescricao}
         />
       </View>
 

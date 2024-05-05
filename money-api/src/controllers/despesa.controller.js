@@ -57,7 +57,7 @@ const inserirDespesas = async (req, res) => {
 	}
 
 	try {
-		const despesa = await prismaClient.despesa.create({
+		await prismaClient.despesa.create({
 			data: {
 				descricao,
 				categoria, 
