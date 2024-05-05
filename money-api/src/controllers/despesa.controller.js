@@ -1,8 +1,52 @@
 import prismaClient from "../database/prismaClient.js";
 
 const listarDespesas = async (req, res) => {
-	const despesas = await prismaClient.despesa.findMany();
-	return res.json(despesas);
+	const config = {
+		include: {
+			id_categoria: true
+		},
+		orderBy: {
+			id: "desc"
+		}
+	}
+	const despesas = await prismaClient.despesa.findMany(config);
+
+	const dados = despesas.map((desp) => ({
+		id: desp.id,
+		descricao: desp.descricao,
+		categoria: desp.categoria,
+		valor: Number(desp.valor),
+		icon: desp.id_categoria?.icon
+	}))
+
+	return res.json(dados);
+}
+
+const showDespesa = async (req, res) => {
+	const { id } = req.params;
+
+	const despesa = await prismaClient.despesa.findFirst({
+		where: {
+			id: Number(id),
+		},
+		include: {
+			id_categoria: true
+		}
+	});
+
+	let dados = {}
+
+	if (despesa) {
+		dados = {
+			id: Number(despesa.id),
+			descricao: despesa.descricao,
+			categoria: despesa.categoria,
+			valor: Number(despesa.valor),
+			icon: despesa.id_categoria?.icon
+		}
+	}
+
+	return res.json(dados);
 }
 
 const inserirDespesas = async (req, res) => {
@@ -72,4 +116,10 @@ const excluirDespesas = async (req, res) => {
 	}
 }
 
-export default { listarDespesas, inserirDespesas, editarDespesas, excluirDespesas };
+export default { 
+	listarDespesas, 
+	showDespesa, 
+	inserirDespesas, 
+	editarDespesas, 
+	excluirDespesas 
+};

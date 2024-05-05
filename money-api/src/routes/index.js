@@ -9,6 +9,7 @@ routes.get('/', (req, res) => {
 })
 
 routes.get('/despesas',     ControllerDespesa.listarDespesas);
+routes.get('/despesas/:id', ControllerDespesa.showDespesa);
 routes.post('/despesas', 	  ControllerDespesa.inserirDespesas);
 routes.put('/despesas/:id', ControllerDespesa.editarDespesas);
 routes.delete('/despesas/:id', ControllerDespesa.excluirDespesas);

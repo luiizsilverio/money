@@ -1,16 +1,20 @@
-import { useState } from "react";
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Picker } from '@react-native-picker/picker';
+import { useRoute } from '@react-navigation/native'
 
 import { styles } from "./cadastro.style";
 import icons from "../../constants/icons";
 import theme from "../../constants/theme";
+import { api } from "../../services/api";
 
 export default function Cadastro(props) {
-  const [id, setId] = useState(0);
   const [valor, setValor] = useState(0);
   const [descricao, setDescricao] = useState("");
   const [categoria, setCategoria] = useState("");
+
+  const route = useRoute();
+	const { id } = route.params;
 
   function handleSalvar() {
     
@@ -22,6 +26,28 @@ export default function Cadastro(props) {
     props.navigation.goBack();
   }
 
+  useEffect(() => {
+    async function buscaDespesa() {
+      try {
+        const response = await api.get(`despesas/${id}`);
+  
+        setDescricao(response.data.descricao);
+        setCategoria(response.data.categoria);
+        setValor(response.data.valor.toString());
+      }
+      catch (error) {
+        console.log(error.message);
+        Alert.alert("Erro ao buscar os dados da despesa");
+      }    
+    }
+
+    props.navigation.setOptions({
+      title: id > 0 ? 'Alterar Despesa' : 'Nova Despesa'
+    })
+
+    buscaDespesa();
+  }, [])
+
   return (
     <View style={styles.container}>
       <View style={styles.containerField}>
@@ -29,7 +55,8 @@ export default function Cadastro(props) {
         <TextInput 
           placeholder="0,00" 
           style={styles.inputValor} 
-          defaultValue={valor.toFixed(2)} 
+          value={valor}
+          // defaultValue={valor.toFixed(2)} 
           keyboardType="decimal-pad" 
         />
       </View>
@@ -39,7 +66,8 @@ export default function Cadastro(props) {
         <TextInput 
           placeholder="Ex: Aluguel" 
           style={styles.inputText} 
-          defaultValue={descricao} 
+          value={descricao}
+          // defaultValue={descricao} 
         />
       </View>
 

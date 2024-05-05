@@ -4,6 +4,7 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import icons from "../../constants/icons.js";
 import { styles } from "./home.style.js";
 import Despesa from '../../components/despesa.jsx';
+import { api } from '../../services/api.js';
 
 const dados = [
   {
@@ -69,14 +70,20 @@ export default function Home(props) {
   const [despesas, setDespesas] = useState([]);
   
   function openDespesa(id) {
-    props.navigation.navigate("despesa");
+    props.navigation.navigate("despesa", {id});
 
   }
 
-  function listarDespesas(props) {
-    // Simular o acesso à API
-    setDespesas(dados);
-    setTotal(dados.reduce((acc, item) => acc + item.valor, 0));
+  async function listarDespesas() {
+    try {
+      const response = await api.get('despesas');
+
+      setDespesas(response.data);
+      setTotal(response.data.reduce((acc, item) => acc + item.valor, 0));
+    }
+    catch (error) {
+      console.log(error.message)
+    }    
   }
 
   useEffect(() => {
