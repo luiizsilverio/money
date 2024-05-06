@@ -10,8 +10,8 @@ app.use(cors());
 
 app.use(routes);
 
-const PORT = 3000;
+const PORT = 3333;
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log(`Money API rodando na porta ${PORT}`)
 })

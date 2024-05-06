@@ -1,35 +1,61 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import "./cad-despesa.css";
 import { useContexto } from "../../context";
+import { api } from "../../services/api";
 
 export default function CadDespesa() {
-  const [valor, setValor] = useState(0);
+  const [valor, setValor] = useState("0");
   const [descricao, setDescricao] = useState("");
-  const [categoria, setCategoria] = useState("");
+  const [categoria, setCategoria] = useState("Lazer");
   const {setShowBusca} = useContexto();
 
   const navigate = useNavigate();
   const { id: idUrl } = useParams();
 
-  function SalvarDados() {
+  async function SalvarDados() {
+    try {
+      if (idUrl > 0) {
+        await api.put(`despesas/${idUrl}`, {
+          descricao,
+          categoria,
+          valor
+        });
+      } else {
+        await api.post('despesas', {
+          descricao,
+          categoria,
+          valor
+        });
+      }
+    }
+    catch (error) {
+      console.log(error.message);
+      alert("Erro ao buscar os dados da despesa", error.message);
+    }    
     navigate("/");
   }
   
-  const getDadosDespesa = (id) => {
-    // Faz o GET na API...
+  const getDadosDespesa = async (id) => {
+    try {
+      const response = await api.get(`despesas/${id}`);
 
-    setValor(150);
-    setDescricao("Compras no mercado");
-    setCategoria("Mercado");
+      const { data } = response;
+      setDescricao(data.descricao);
+      setCategoria(data.categoria);
+      setValor(data.valor.toString());
+    }
+    catch (error) {
+      console.log(error.message);
+      alert("Erro ao buscar os dados da despesa", error.message);
+    }    
   }
 
   useEffect(() => {
     setShowBusca(false);
 
-    if (idUrl !== "add") {
-      getDadosDespesa(idUrl);
-    }
+    if (idUrl !== "add") getDadosDespesa(idUrl);
   }, [])
 
   return (

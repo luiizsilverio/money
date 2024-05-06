@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useContexto } from "../../context.js";
 import icons from "../../styles/icons.js";
+import { api } from "../../services/api.js";
 import "./home.css";
 
 let dados = [
@@ -23,8 +24,18 @@ export default function Home() {
 
   const navigate = useNavigate();
 
-  function deleteDespesa(id) {
-    alert(id);
+  async function deleteDespesa(id) {
+    if (!confirm('Confirma excluir despesa?')) return;
+
+    try {
+      await api.delete(`despesas/${id}`);
+
+      listarDespesas(busca);
+    }
+    catch (error) {
+      console.log(error.message);
+      alert("Erro ao excluir despesa");
+    }
   }
   
   function RenderDespesa({despesa}) {
@@ -32,7 +43,14 @@ export default function Home() {
       <tr>
         <td>{despesa.id.toString().padStart(5,'0')}</td>
         <td>{despesa.descricao}</td>
-        <td>{despesa.categoria}</td>
+
+        <td>
+          <div>
+            <img src={despesa.icon} alt={despesa.categoria} className="icon-sm" />
+            <span className="ml-10">{despesa.categoria}</span>
+          </div>
+        </td>
+
         <td className="text-right">
           {
             despesa.valor.toLocaleString("pt-BR", {
@@ -57,17 +75,26 @@ export default function Home() {
     )
   }
 
-  function listarDespesas(busca) {
-    let data = dados;
+  async function listarDespesas(busca) {
+
+    let config = {}
 
     if (busca) {
-      data = dados.filter((desp) => 
-        desp.descricao.toUpperCase().includes(busca.toUpperCase())
-      );
+      config.params = {
+        descricao: busca
+      }
     }
 
-    setDespesas(data);
-    setVtotal(data.reduce((acc, item) => acc + item.valor, 0));
+    try {
+      const response = await api.get("despesas", config);
+
+      setDespesas(response.data);
+      setVtotal(response.data.reduce((acc, item) => acc + item.valor, 0));
+    }
+    catch (error) {
+      console.log(error.message);
+      alert("Erro ao buscar dados");
+    }
   }
 
   useEffect(() => {
@@ -84,25 +111,34 @@ export default function Home() {
           Adicionar Despesa
         </button>
       </div>
-      <div className="box-despesa">
-        <table>
-          <thead>
-            <tr>
-              <th>ID Despesa</th>
-              <th>Descrição</th>
-              <th>Categoria</th>
-              <th className="text-right">Valor R$</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              despesas.map((despesa) => 
-                <RenderDespesa despesa={despesa} key={despesa.id} />
-              )
-            }
-          </tbody>
-        </table>
-      </div>
+
+      {despesas.length
+        ?
+          <div className="box-despesa">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID Despesa</th>
+                  <th>Descrição</th>
+                  <th>Categoria</th>
+                  <th className="text-right">Valor R$</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  despesas.map((despesa) => 
+                    <RenderDespesa despesa={despesa} key={despesa.id} />
+                  )
+                }
+              </tbody>
+            </table>
+          </div>
+        :   
+          <div className="empty-despesa">
+            <img src={icons.empty} alt="Nenhuma despesa encontrada" />
+            <p>Nenhuma despesa encontrada</p>
+          </div>
+      }
     </div>
   )
 }

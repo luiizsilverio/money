@@ -1,6 +1,8 @@
 import prismaClient from "../database/prismaClient.js";
 
 const listarDespesas = async (req, res) => {
+	const { descricao } = req.query;
+
 	const config = {
 		include: {
 			id_categoria: true
@@ -9,6 +11,15 @@ const listarDespesas = async (req, res) => {
 			id: "desc"
 		}
 	}
+
+	if (descricao) {
+		config.where = {
+			descricao: {
+				contains: descricao
+			}
+		}
+	}
+
 	const despesas = await prismaClient.despesa.findMany(config);
 
 	const dados = despesas.map((desp) => ({
