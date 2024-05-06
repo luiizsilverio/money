@@ -5,6 +5,7 @@
   </tr>
 </table>
 
+
 ## Conteúdo
 * [Sobre a aplicação](#sobre-a-aplicação)
 * [Tecnologias](#hammer_and_wrench-tecnologias)
@@ -14,6 +15,7 @@
 * [Contato](#email-contato)
 
 <br />
+
 ## Sobre a aplicação
 Aplicação desenvolvida durante o evento __Jornada JS__, promovido pela __Dev Point__.<br />
 Durante o evento de 4 dias e mais de 10 horas, foram desenvolvidas 3 aplicações: uma API em Node, uma aplicação React e um App em React Native. <br />
