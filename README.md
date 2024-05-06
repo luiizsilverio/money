@@ -13,6 +13,7 @@
 * [Licença](#balance_scale-licença)
 * [Contato](#email-contato)
 
+<br />
 ## Sobre a aplicação
 Aplicação desenvolvida durante o evento __Jornada JS__, promovido pela __Dev Point__.<br />
 Durante o evento de 4 dias e mais de 10 horas, foram desenvolvidas 3 aplicações: uma API em Node, uma aplicação React e um App em React Native. <br />
@@ -64,13 +65,15 @@ $ cd money-mobile
 $ npm install
 $ npm start
 ```
-
+<br />
 
 ## :camera_flash: Screenshots
 ![](https://github.com/luiizsilverio/money/blob/main/money-web/src/assets/banner-telas.png)
+<br />
 
 ## :balance_scale: Licença
 Este projeto está licenciado sob a [licença MIT](LICENSE).
+<br /><br />
 
 ## :email: Contato
 
